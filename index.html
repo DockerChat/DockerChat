@@ -21,26 +21,28 @@
 <script>
   document.addEventListener('dfMessengerLoaded', function () {
     const messenger = document.querySelector('df-messenger');
-    
+
     // Listen for new messages
     messenger.addEventListener('df-response-received', function(event) {
-      const response = event.detail.response;
-      const messages = response.fulfillmentMessages;
-      
-      // Extract and display the source at the end of the message
-      if (messages.length > 1) {
-        const sourceMessage = messages[messages.length - 1].text.text;
-        const source = sourceMessage ? `Source: ${sourceMessage}` : '';
+        const response = event.detail.response;
+        const messages = response.fulfillmentMessages;
 
-        // Customize how the source is displayed
-        const chatContainer = document.querySelector('.df-messenger-chat');
-        const sourceDiv = document.createElement('div');
-        sourceDiv.classList.add('source');
-        sourceDiv.innerHTML = source;
-        chatContainer.appendChild(sourceDiv);
-      }
+        // Extract and display the source title in a cleaner format
+        if (messages.length > 1) {
+            const sourceMessage = messages[messages.length - 1].text.text;
+
+            // Clean up the source message to display only the file name
+            const cleanSource = sourceMessage.replace('Title for ', '').split(' ')[0]; // Adjust based on source format
+
+            const chatContainer = document.querySelector('.df-messenger-chat');
+            const sourceDiv = document.createElement('div');
+            sourceDiv.classList.add('source');
+            sourceDiv.innerHTML = `Source: ${cleanSource}`;
+            chatContainer.appendChild(sourceDiv);
+        }
     });
-  });
+});
+
 </script>
 
 <style>
@@ -61,7 +63,7 @@
     color: gray;
     margin-top: 5px;
     font-style: italic;
-  }
+}
 </style>
 <!--DialogFlow CX -->	
 	
